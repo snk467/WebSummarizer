@@ -1,6 +1,7 @@
 ﻿
 name: WebSummarizer
 channels:
+  - conda-forge
   - defaults
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
@@ -29,6 +30,7 @@ dependencies:
   - libffi=3.4.4=hd77b12b_1
   - markdown-it-py=2.2.0=py312haa95532_1
   - mdurl=0.1.0=py312haa95532_0
+  - ollama-python=0.4.7=pyhd8ed1ab_0
   - openai=1.60.1=py312haa95532_0
   - openssl=3.0.15=h827c3e9_0
   - outcome=1.1.0=pyhd3eb1b0_0
@@ -55,10 +57,12 @@ dependencies:
   - typing-extensions=4.12.2=py312haa95532_0
   - typing_extensions=4.12.2=py312haa95532_0
   - tzdata=2025a=h04d1e81_0
+  - ucrt=10.0.20348.0=haa95532_0
   - urllib3=2.3.0=py312haa95532_0
   - validators=0.18.2=pyhd3eb1b0_0
   - vc=14.42=haa95532_4
-  - vs2015_runtime=14.42.34433=he0abc0d_4
+  - vc14_runtime=14.42.34433=h6356254_24
+  - vs2015_runtime=14.42.34433=hfef2bbc_24
   - websocket-client=1.8.0=py312haa95532_0
   - wheel=0.45.1=py312haa95532_0
   - win_inet_pton=1.1.0=py312haa95532_0

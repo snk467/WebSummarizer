@@ -1,20 +1,29 @@
+import argparse
 import os
 import sys
+from enum import Enum
+
+import ollama
 import validators
-import argparse
-from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from openai import OpenAI
 from rich.console import Console
 from rich.markdown import Markdown
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
-
+from selenium.webdriver.support.ui import WebDriverWait
 
 SYSTEM_PROMPT = "You are an assistant that analyzes the contents of a website \
 and provides a short summary, ignoring text that might be navigation related. \
 Respond in markdown."
+
+class Provider(Enum):
+    open_ai = 'openai'
+    ollama = 'ollama'
+
+    def __str__(self):
+        return self.value
 
 class Website:
 
@@ -54,7 +63,7 @@ def messages_for(website):
         {"role": "user", "content": user_prompt_for(website)}
     ]
 
-def summarize(url):
+def summarize_open_ai(url):
     website = Website(url)
     response = openai.chat.completions.create(
         model =  os.getenv("OPENAI_MODEL"),
@@ -62,8 +71,23 @@ def summarize(url):
     )
     return response.choices[0].message.content
 
-def print_summary(url):
-    summary = summarize(url)
+def summarize_ollama(url):
+    website = Website(url)
+    response = ollama.chat(
+        model =  os.getenv("OLLAMA_MODEL"),
+        messages = messages_for(website)
+    )
+    return response['message']['content']
+
+def print_summary(url, provider):
+    summary = str()
+
+    match provider:
+        case Provider.open_ai:
+            summary = summarize_open_ai(url)
+        case Provider.ollama:
+            summary = summarize_ollama(url)
+
     Console().print(Markdown(summary))
 
 if __name__ == '__main__':
@@ -72,6 +96,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('url', nargs='?', help="URL of a website to be summarize.")
+    parser.add_argument('provider', default=Provider.open_ai, type=Provider, choices=list(Provider), help="LLM model provider.")
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
@@ -83,7 +108,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     try:
-        print_summary(args.url)
+        print_summary(args.url, args.provider)
     except WebDriverException:
         print(f"There was an error loading {args.url} website.")
         sys.exit(1)
