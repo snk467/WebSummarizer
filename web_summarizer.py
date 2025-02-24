@@ -95,7 +95,7 @@ if __name__ == '__main__':
     openai = OpenAI()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('url', nargs='?', help="URL of a website to be summarize.")
+    parser.add_argument('url', nargs='?', help="URL of a website to be summarized.")
     parser.add_argument('provider', default=Provider.open_ai, type=Provider, choices=list(Provider), help="LLM model provider.")
     if len(sys.argv) == 1:
         parser.print_help()
