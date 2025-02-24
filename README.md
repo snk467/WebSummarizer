@@ -4,13 +4,14 @@ WebSummarizer is a lightweight Python script that leverages the OpenAI API to ge
 
 ## Usage
 ```
-usage: web_summarizer.py [-h] [url]
+usage: web_summarizer.py [-h] [url] {openai,ollama}
 
 positional arguments:
-  url         URL of a website to be summarize.
+  url              URL of a website to be summarize.
+  {openai,ollama}  LLM model provider.
 
-options
-  -h, --help  show this help message and exit
+options:
+  -h, --help       show this help message and exit
   ```
 
 ## Prerequisites
